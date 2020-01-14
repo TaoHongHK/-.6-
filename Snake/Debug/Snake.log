@@ -1,0 +1,3 @@
+﻿  game.c
+d:\vs programs\snake\snake\game.c(76): warning C4026: 使用形参表声明的函数
+  Snake.vcxproj -> D:\VS programs\Snake\Debug\Snake.exe
