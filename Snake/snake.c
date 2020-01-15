@@ -22,17 +22,8 @@ void add_head_node(Snake* snake, int pos_x, int pos_y)
 	body->pos_x = pos_x;
 	body->pos_y = pos_y;
 	body->dir = head->dir;
-	if (head->next_node == head)
-	{
-		body->previous_node = head;
-		head->next_node = body;
-	}
-	else
-	{
-		body->previous_node = head->previous_node;
-		head->previous_node->next_node = body;
-
-	}
+	body->previous_node = head->previous_node;
+	head->previous_node->next_node = body;
 	head->previous_node = body;
 	body->next_node = head;
 	snake->head = body;
@@ -75,7 +66,7 @@ void move(Snake* snake,  Direction dir) {
 	Snake_Body_Node * head = snake->head;
 	int pos_x = head->pos_x;
 	int pos_y = head->pos_y;
-	Sleep(700 - snake->speed * 200);
+	Sleep(700 - snake->speed * 300);
 	switch (dir)
 	{
 	case up:

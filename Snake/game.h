@@ -15,6 +15,7 @@
 #define MENU_ONE "开始游戏"
 #define MENU_TWO "查看排名"
 #define MENU_THREE "退出游戏"
+#define RANK_NUM 10
 
 typedef enum stuff_mark 
 {
@@ -38,8 +39,8 @@ typedef enum option
 
 enum state {
 	in_menu,
-	gaming, 
-	rank,
+	gaming,
+	_check_ranking,
 	snake_dead,
 	to_quit	
 }State;
@@ -69,8 +70,11 @@ void judge_move_input(struct game*Game, Snake* snake, int* input, int*last_input
 void menu();
 void show_menu();
 void save_score(int score, char* player);
-void check_rank();
-void show_dead();
+void rank();
+int if_can_rank(int score);
+void add_to_ranking(int score);
+void load_ranking();
+void dead();
 
 #endif // !GAME_HEAD_FILE 
 

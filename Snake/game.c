@@ -1,5 +1,11 @@
 ﻿#include "game.h"
 
+
+/**
+* 菜单部分
+* Author: tao
+* Date: 2020/01/15
+**/
 void menu() 
 {
 	show_menu();
@@ -34,7 +40,7 @@ void menu()
 					}
 					else if (choice == 1)
 					{
-						State = rank;
+						State = _check_ranking;
 					}
 					else if (choice == 2)
 					{
@@ -72,12 +78,118 @@ void show_menu()
 	printf("--->");
 }
 
-void save_score()
-{
 
+/**
+* 排名部分功能
+* Author: tao
+* Date: 2020/01/15
+**/
+
+void save_score(int score, char* player)
+{
+	FILE *fp = NULL;
+	if (fopen_s(&fp, "./rank.txt", "r+"))
+		return;
+	char each_info[15], new_player[15];
+	int scores[RANK_NUM];
+	char names[RANK_NUM][15];
+	for (int i = 0; i < RANK_NUM * 2 && fgets(each_info, 15, fp) != NULL; i++)
+	{
+		if (!(i & 1))
+			scores[i / 2] = atoi(each_info);
+		else strcpy_s(*(names + i / 2), 15, each_info);
+	}
+	for (int i = 0; i < RANK_NUM; i++)
+	{
+		if (score > scores[i])
+		{
+			for (int j = RANK_NUM - 1; j > i; j--)
+			{
+				scores[j] = scores[j - 1];
+				strcpy_s(*(names + j), 15, *(names + j-1));
+			}
+			scores[i] = score;
+			strcpy_s(new_player, 15, player);
+			strcat_s(new_player, 15, "\n");
+			strcpy_s(*(names + i), 15, new_player);
+			break;
+		}
+	}
+	fseek(fp, 0, SEEK_SET);
+	for (int i = 0; i < RANK_NUM; i++)
+	{
+		fprintf_s(fp, "%d\n%s", scores[i], *(names + i));
+	}
+	fclose(fp);
 }
 
-void check_rank()
+void add_to_ranking(int score)
+{
+	set_console_color(3, 0);
+	set_cursor_position(0, 0);
+	printf("%s", LONG_LINE);
+	set_cursor_position(15, 1);
+	printf("Your Score: %d", score);
+	set_cursor_position(0, 2);
+	printf("%s", LONG_LINE);
+	char player[10];
+	set_cursor_position(10, 3);
+	printf("Press 's' To Rank, 'esc' To exit");
+	while (1)
+	{
+		if (_kbhit())
+		{
+			int input = _getch();
+			if (input == 's')
+			{
+				set_cursor_position(10, 4);
+				printf("Enter Your Name: ");
+				scanf_s("%s", &player, 10);
+				break;
+			}
+		}
+	}
+	save_score(score, player);
+	State = in_menu;
+}
+
+int if_can_rank(int score)
+{
+	FILE *fp;
+	if (fopen_s(&fp, "./rank.txt", "r"))
+		return 0;
+	char each_info[15];
+	int scores[RANK_NUM];
+	for (int i = 0; i < RANK_NUM*2; i++)
+	{
+		fgets(each_info, 15, fp);
+		if (!( i & 1))
+		{
+			scores[i / 2] = atoi(each_info);
+		}
+	}
+	fclose(fp);
+	return score >= scores[RANK_NUM - 1];
+}
+
+void load_ranking() 
+{
+	FILE *fp;
+	if (fopen_s(&fp, "./rank.txt", "r"))
+		return;
+	char each_info[15];
+	while (fgets(each_info, 15, fp))
+	{
+		printf("score:");
+		printf("%20s", each_info);
+		fgets(each_info, 15, fp);
+		printf("player:");
+		printf("%20s", each_info);
+	}
+	fclose(fp);
+}
+
+void rank()
 {
 	set_console_color(3, 0);
 	set_cursor_position(0, 0);
@@ -85,10 +197,22 @@ void check_rank()
 	set_cursor_position(15, 1);
 	printf("%s", RANKING);
 	set_cursor_position(0, 2);
-	printf("%s", LONG_LINE);
+	printf("%s\n", LONG_LINE);
+	load_ranking();
+	while (State == _check_ranking)
+	{
+		if (_kbhit())
+			State = in_menu;
+	}
 }
 
-void show_dead()
+
+/**
+* 游戏结束界面，按esc键退出
+* Author: tao
+* Date: 2020/01/15
+**/
+void dead()
 {
 	set_console_color(4, 0);
 	set_cursor_position(WIDTH/2 - 15, HEIGHT / 2 - 1);
@@ -104,6 +228,12 @@ void show_dead()
 	}
 }
 
+
+/**
+* 游戏
+* Author: tao
+* Date: 2020/01/15
+**/
 void start_game() 
 {
 	struct game *Game = (struct game*)malloc(sizeof(struct game));
@@ -230,7 +360,13 @@ void snake_move(struct game*Game, Snake* snake, Direction dir)
 		break;
 	case _snake:
 	case wall:
-		State = snake_dead;
+		if (if_can_rank(Game->score))
+		{
+			system("cls");
+			add_to_ranking(Game->score);
+		}
+		else State = snake_dead;
+		break;
 	default:
 		break;
 	}
@@ -279,6 +415,8 @@ void init_map(struct game* Game)
 	 }
 }
 
+
+
 void main() 
 {
 	State = in_menu;
@@ -295,11 +433,12 @@ void main()
 			system("cls");
 			start_game();
 			break;
-		case rank:
+		case _check_ranking:
 			system("cls");
-			check_rank();
+			rank();
+			break;
 		case snake_dead:
-			show_dead();
+			dead();
 			break;
 		case to_quit:
 			quit = 1;
