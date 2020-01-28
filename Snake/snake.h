@@ -41,6 +41,7 @@ void add_head_node(Snake* snake, int pos_x, int pos_y);
 void remove_tail_node(Snake* snake);
 void destroy_snake(Snake* snake);
 Snake_Body_Node* mknode();
-void move(Snake* snake, Direction dir);
+void move(Snake* snake, Direction dir, int pos_x, int pos_y);
+void eat(Snake* snake, Direction dir, int pos_x, int pos_y);
 
 #endif // !SNAKE_HEAD_FILE

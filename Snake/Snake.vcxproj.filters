@@ -24,6 +24,15 @@
     <ClInclude Include="console.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rank.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="snake.c">
@@ -33,6 +42,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="console.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rank.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

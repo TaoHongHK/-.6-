@@ -62,34 +62,15 @@ Snake_Body_Node* mknode()
 	return node;
 }
 
-void move(Snake* snake,  Direction dir) {
-	Snake_Body_Node * head = snake->head;
-	int pos_x = head->pos_x;
-	int pos_y = head->pos_y;
+void move(Snake* snake,  Direction dir, int pos_x, int pos_y) {
 	Sleep(700 - snake->speed * 300);
-	switch (dir)
-	{
-	case up:
-		snake->head->dir = up;
-		add_head_node(snake, pos_x, pos_y - 1);
-		remove_tail_node(snake);
-		break;
-	case right:
-		snake->head->dir = right;
-		add_head_node(snake, pos_x + 1, pos_y);
-		remove_tail_node(snake);
-		break;
-	case down:
-		snake->head->dir = down;
-		add_head_node(snake, pos_x, pos_y + 1);
-		remove_tail_node(snake);
-		break;
-	case left:
-		snake->head->dir = left;
-		add_head_node(snake, pos_x - 1, pos_y);
-		remove_tail_node(snake);
-		break;
-	default:
-		break;
-	}
+	snake->head->dir = dir;
+	add_head_node(snake, pos_x , pos_y);
+	remove_tail_node(snake);
+}
+
+void eat(Snake* snake, Direction dir, int pos_x, int pos_y) {
+	Sleep(700 - snake->speed * 300);
+	snake->head->dir = dir;
+	add_head_node(snake, pos_x, pos_y);
 }

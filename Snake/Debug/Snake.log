@@ -1,2 +1,4 @@
-﻿  game.c
+﻿  main.c
+  menu.c
+  正在生成代码...
   Snake.vcxproj -> D:\VS programs\Snake\Debug\Snake.exe

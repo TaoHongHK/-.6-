@@ -1,7 +1,7 @@
 #ifndef CONSOLE_HEAD_FILE
 #define CONSOLE_HEAD_FILE
 
-#include <stdio.h>
+
 #include <Windows.h>
 #include <conio.h>
 #include <stdlib.h>

@@ -117,11 +117,17 @@
   <ItemGroup>
     <ClInclude Include="console.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="rank.h" />
     <ClInclude Include="snake.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
+    <ClCompile Include="rank.c" />
     <ClCompile Include="snake.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
